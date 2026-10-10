@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AQUA Smart Bottle Configurator</title>
+<link rel="stylesheet" href="Product-Configurator.css">
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">
+    <!-- Interactive premium badge (CSS shape) -->
+    <div id="premiumBadge" class="badge-star" role="img" aria-label="Premium badge"></div>
+    <span>AQUA</span>
+  </div>
+  <nav>
+    <a href="#customize">Customize</a>
+    <a href="#advert">Watch</a>
+    <a href="#premium">Premium</a>
+    <a href="#apiData">API</a>
+    <a href="#cart">Cart</a>
+    <a href="#" id="navUpgrade">Payment</a>
+  </nav>
+  <span id="userStatus" class="status-pill free">Free User</span>
+</header>
+
+<main class="app">
+
+  <section id="customize" class="section">
+    <h1>Customize Your Water Bottle</h1>
+    <p class="subtitle">Pick an ombré colour, size and engraving. Drag the bottle into the cart when you like it.</p>
+
+    <form id="configForm" novalidate>
+      <div class="configurator">
+
+        <div class="card">
+          <h2>Product Preview</h2>
+          <div id="previewArea" class="preview-area">
+            <div id="product" class="product" draggable="true">
+              <div class="b-shadow"></div>
+              <div class="b-handle"></div>
+              <div class="b-neck"></div>
+              <div class="b-cap"></div>
+              <div class="b-spout"></div>
+              <div class="b-straw"></div>
+              <div class="b-body">
+                <div class="b-frost"></div>
+                <div class="b-highlight"></div>
+                <span class="sticker s1"></span><span class="sticker s2"></span><span class="sticker s3"></span><span class="sticker s4"></span>
+                <ul class="b-marks">
+                  <li><b>7AM</b><i>☼</i><span>Rise and shine</span></li>
+                  <li><b>9AM</b><i>♥</i><span>Let&#39;s get started</span></li>
+                  <li><b>11AM</b><i>✎</i><span>Remember your goal</span></li>
+                  <li><b>1PM</b><i>➤</i><span>Keep it up</span></li>
+                  <li><b>3PM</b><i>◔</i><span>Half way there</span></li>
+                  <li><b>5PM</b><i>✿</i><span>You can do this</span></li>
+                  <li><b>7PM</b><i>✓</i><span>Don&#39;t quit now!</span></li>
+                  <li><b>9PM</b><i>★</i><span>All in a day&#39;s work</span></li>
+                </ul>
+                <div class="b-shine"></div>
+              </div>
+              <div class="label-text">
+                <div class="logo">AQUA</div>
+                <div id="engravingPreview" class="engraving"></div>
+              </div>
+            </div>
+            <div id="previewLabel" class="preview-label">Move your pointer over the bottle</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>Product Configuration</h2>
+
+          <div class="field">
+            <label for="engravingInput">Custom Engraving <span class="tag premium-tag">Premium</span></label>
+            <input class="input" id="engravingInput" type="text" maxlength="20" placeholder="🔒 Premium feature" autocomplete="off" readonly>
+            <div class="counter"><span id="engravingHint">🔒 Engraving is a Premium feature</span><span id="charCount">0 / 20</span></div>
+            <div class="error-text" id="engravingError"></div>
+          </div>
+
+          <div class="field">
+            <label>Colour <span class="tag free-tag">Free</span></label>
+            <div class="color-options" id="freeColors">
+              <button type="button" class="color-option selected" data-color="sunset" style="--c:linear-gradient(180deg,#93a9f0,#b6a9d2,#f5a766)" aria-label="Sunset ombré"></button>
+              <button type="button" class="color-option" data-color="ocean" style="--c:linear-gradient(180deg,#7fd8f5,#3b8fe0,#1b4fb0)" aria-label="Ocean ombré"></button>
+              <button type="button" class="color-option" data-color="mint" style="--c:linear-gradient(180deg,#b8f2d0,#5fd09a,#1e9a66)" aria-label="Mint ombré"></button>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="sizeSelect">Size <span class="tag free-tag">1 L / 1.5 L free</span></label>
+            <select class="select" id="sizeSelect">
+              <option value="">Select a size</option>
+              <option value="1L">1 Liter (+$0)</option>
+              <option value="1.5L">1.5 Liter (+$5)</option>
+              <option value="2L">2 Liter (+$9)</option>
+            </select>
+            <div class="error-text" id="sizeError"></div>
+          </div>
+
+          <div class="field">
+            <label for="lidSelect">Lid Style <span class="tag free-tag">Handle cap free</span></label>
+            <select class="select" id="lidSelect">
+              <option value="standard">Handle cap</option>
+              <option value="sport">Straw cap</option>
+            </select>
+          </div>
+
+          <div class="price-box">
+            <div>Motivational Water Bottle</div>
+            <div class="price" id="price">$24.99</div>
+            <div class="description" id="protectedDescription">
+              A frosted, leak-proof water bottle with hourly goal markers from 7AM to 9PM and a carry handle, so you always know how much to have drunk by now. Choose your colours and add a personal engraving.
+            </div>
+          </div>
+
+          <div class="buttons">
+            <button class="btn" type="submit">Add to Cart</button>
+            <button class="btn reset" type="reset">Reset</button>
+          </div>
+          <div id="message" class="message">Configure your product to get started.</div>
+          <div id="focusStatus" class="status">Ready</div>
+        </div>
+      </div>
+    </form>
+  </section>
+
+
+  <section id="apiData" class="section">
+    <div class="card api-card">
+      <div class="api-header">
+        <div>
+          <span class="eyebrow">Q2 + Q3</span>
+          <h2>Live Product Data &amp; Order API</h2>
+          <p class="subtitle">Fetch a product from a public API, then send your selected configuration to the local Express backend.</p>
+        </div>
+        <span id="apiStatus" class="api-status idle">Ready</span>
+      </div>
+
+      <div class="api-actions">
+        <button type="button" class="btn" id="loadApiProductBtn">Load Product from Public API</button>
+        <button type="button" class="btn secondary" id="loadBackendProductBtn">GET Local Product</button>
+        <button type="button" class="btn upgrade-btn" id="sendConfigurationBtn">POST Configuration</button>
+      </div>
+
+      <div class="api-grid">
+        <div class="api-product">
+          <img id="apiProductImage" src="" alt="API product preview" hidden>
+          <div>
+            <h3 id="apiProductName">No external product loaded yet</h3>
+            <p id="apiProductDescription">Click “Load Product from Public API” to make a jQuery AJAX GET request.</p>
+            <div class="api-meta">
+              <span id="apiProductCategory">Category: —</span>
+              <span id="apiProductPrice">Price: —</span>
+            </div>
+          </div>
+        </div>
+
+        <pre id="apiResponseBox" class="api-response">Waiting for a JSON response...</pre>
+      </div>
+
+      <div id="backendMessage" class="message">Backend: not contacted yet.</div>
+    </div>
+  </section>
+
+  <section id="premium" class="section">
+    <h2>Premium Customization</h2>
+    <p class="subtitle">Free users get a blank bottle with 3 colours, 1 L / 1.5 L sizes and the handle cap. Free options are marked <span class="tag free-tag">Free</span>. Features marked <span class="tag premium-tag">Premium</span> unlock after upgrade.</p>
+
+    <div class="card premium-card" id="premiumCard">
+      <div class="lock-note" id="lockNote">🔒 Locked – upgrade to use these features</div>
+
+      <div class="field">
+        <label>Premium Colours <span class="tag premium-tag">Premium</span></label>
+        <div class="color-options" id="premiumColors">
+              <button type="button" class="color-option premium-item" data-color="berry" style="--c:linear-gradient(180deg,#ffb3c7,#d96aa7,#7a3b9e)" aria-label="Berry (premium)"></button>
+              <button type="button" class="color-option premium-item" data-color="graphite" style="--c:linear-gradient(180deg,#9aa3b2,#5b6475,#262b36)" aria-label="Graphite (premium)"></button>
+          <button type="button" class="color-option premium-item" data-color="gold" style="--c:linear-gradient(180deg,#fff0a8,#f2c94c,#b8860b)" aria-label="Gold (premium)"></button>
+          <button type="button" class="color-option premium-item" data-color="rose" style="--c:linear-gradient(180deg,#ffd9e2,#f48fb1,#c2185b)" aria-label="Rose (premium)"></button>
+          <button type="button" class="color-option premium-item" data-color="aurora" style="--c:linear-gradient(180deg,#7af7d4,#6f8bff,#9b3df0)" aria-label="Aurora (premium)"></button>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="fontSelect">Advanced Engraving Font <span class="tag premium-tag">Premium</span></label>
+        <select class="select premium-item" id="fontSelect" data-feature="Advanced engraving fonts">
+          <option value="default">Classic sans</option>
+          <option value="script">Elegant script</option>
+          <option value="serif">Royal serif</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Visual Effects <span class="tag premium-tag">Premium</span></label>
+        <div class="toggle-row">
+          <label class="check"><input type="checkbox" class="premium-item" id="glowToggle" data-feature="Glow effect"> Glow</label>
+          <label class="check"><input type="checkbox" class="premium-item" id="metalToggle" data-feature="Metallic finish"> Metallic shine</label>
+        </div>
+      </div>
+
+      <div class="pay-methods" aria-label="Accepted payment methods">
+        <span>💳 Card</span><span>🅿 PayPal</span><span>💵 Cash</span>
+      </div>
+      <button type="button" class="btn upgrade-btn" id="openUpgradeBtn">Upgrade &amp; choose payment method</button>
+    </div>
+  </section>
+
+  <section id="advert" class="section">
+    <h2>See AQUA in Action</h2>
+    <div class="video-wrap short">
+      <iframe id="adVideo"
+        src="https://www.youtube.com/embed/DKVlV9Ym10s?rel=0&amp;playsinline=1"
+        title="AQUA water bottle advertisement"
+        loading="lazy"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        referrerpolicy="strict-origin-when-cross-origin"
+        allowfullscreen></iframe>
+    </div>
+    <p class="subtitle small" style="text-align:center">Video not playing? <a href="https://youtube.com/shorts/DKVlV9Ym10s" target="_blank" rel="noopener">Watch it on YouTube</a>.</p>
+  </section>
+
+  <section id="cart" class="section">
+    <div id="cartZone" class="cart">
+      <div class="cart-icon">🛒</div>
+      <h3 id="cartTitle">Drop Product Here</h3>
+      <div class="cart-info">Drag the bottle preview into this area, or press Add to Cart.</div>
+      <div id="cartDetails"></div>
+    </div>
+  </section>
+</main>
+
+<!-- Payment modal -->
+<div id="paymentOverlay" class="overlay" hidden>
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="paymentTitle">
+    <button type="button" class="close-btn" id="closePaymentBtn" aria-label="Close">×</button>
+
+    <div id="paymentView">
+      <h2 id="paymentTitle">Upgrade to AQUA Premium</h2>
+      <div class="plan-box">
+        <div><strong>Premium Plan</strong><br><span class="muted">One-time upgrade</span></div>
+        <div class="price">$9.99</div>
+      </div>
+      <ul class="feature-list">
+        <li>Custom name engraving on your bottle</li>
+        <li>Straw cap and 2 Liter size</li>
+        <li>Berry, Graphite, Gold, Rose &amp; Aurora colours</li>
+        <li>Script and serif engraving fonts</li>
+        <li>Glow and metallic effects</li>
+      </ul>
+      <p class="muted small">Demo only – do not enter real card details. Nothing is stored or sent.</p>
+
+      <form id="paymentForm" novalidate>
+        <div id="payLayout" class="pay-layout">
+          <div class="pay-fields">
+            <div class="field">
+              <label for="paymentMethod">Payment Method</label>
+              <select class="select" id="paymentMethod">
+                <option value="card">Credit / Debit Card</option>
+                <option value="paypal">PayPal</option>
+                <option value="cash">Cash</option>
+              </select>
+            </div>
+
+            <!-- Card -->
+            <div id="cardFields">
+              <div class="field">
+                <label for="cardName">Cardholder Name</label>
+                <input class="input" id="cardName" type="text" autocomplete="off" placeholder="Jane Doe">
+                <div class="error-text" id="cardNameError"></div>
+              </div>
+              <div class="field">
+                <label for="cardNumber">Card Number</label>
+                <input class="input" id="cardNumber" type="text" inputmode="numeric" maxlength="19" autocomplete="off" placeholder="1234 5678 9012 3456">
+                <div class="error-text" id="cardNumberError"></div>
+              </div>
+              <div class="row">
+                <div class="field">
+                  <label for="cardExpiry">Expiry (MM/YY)</label>
+                  <input class="input" id="cardExpiry" type="text" inputmode="numeric" maxlength="5" autocomplete="off" placeholder="08/29">
+                  <div class="error-text" id="cardExpiryError"></div>
+                </div>
+                <div class="field">
+                  <label for="cardCvv">CVV</label>
+                  <input class="input" id="cardCvv" type="password" inputmode="numeric" maxlength="3" autocomplete="off" placeholder="123">
+                  <div class="error-text" id="cardCvvError"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- PayPal -->
+            <div id="paypalFields" hidden>
+              <div class="field">
+                <label for="paypalEmail">PayPal Email</label>
+                <input class="input" id="paypalEmail" type="text" autocomplete="off" placeholder="you@example.com">
+                <div class="error-text" id="paypalEmailError"></div>
+              </div>
+              <p class="muted small">Demo only. You are not redirected to PayPal.</p>
+            </div>
+
+            <!-- Cash -->
+            <div id="cashFields" hidden>
+              <div class="field">
+                <label for="cashName">Full Name</label>
+                <input class="input" id="cashName" type="text" autocomplete="off" placeholder="Jane Doe">
+                <div class="error-text" id="cashNameError"></div>
+              </div>
+              <p class="muted small">Pay in cash when you collect your order. Premium is activated once you confirm.</p>
+            </div>
+
+            <div class="buttons">
+              <button class="btn" type="submit" id="payBtn">Upgrade &amp; Pay $9.99</button>
+              <button class="btn reset" type="reset" id="payResetBtn">Reset</button>
+            </div>
+          </div>
+
+          <!-- Live card preview (card method only) -->
+          <div id="cardPreview" class="card-preview">
+            <div class="card-brand"><strong>MY BANK</strong><span>VISA</span></div>
+            <div class="chip"></div>
+            <div id="previewNumber" class="card-number">**** **** **** ****</div>
+            <div class="card-meta"><span id="previewName">CARD HOLDER</span><span id="previewExpiry">MM/YY</span></div>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <div id="processingView" class="center-view" hidden>
+      <div class="spinner"></div>
+      <p>Processing payment…</p>
+    </div>
+
+    <div id="successView" class="center-view" hidden>
+      <div id="lottieBox" class="lottie-box"></div>
+      <h2>Premium Activated!</h2>
+      <p id="successMethod" class="muted small"></p>
+      <p class="muted">All premium customization features are now unlocked.</p>
+      <button type="button" class="btn" id="successCloseBtn">Start Customizing</button>
+    </div>
+  </div>
+</div>
+
+<!-- Locked feature prompt -->
+<!-- Floating cart: always visible drop target -->
+<div id="miniCart" class="mini-cart" role="button" tabindex="0" aria-label="Cart. Drop the bottle here">
+  <span class="mini-icon">🛒</span>
+  <span class="mini-text">Drop here</span>
+  <span id="miniCartCount" class="mini-count">0</span>
+</div>
+
+<div id="lockToast" class="lock-toast" hidden>
+  <span id="lockToastText"></span>
+  <button type="button" id="lockToastUpgrade">Upgrade</button>
+</div>
+
+<div class="footer-bar">
+  <button type="button" class="link-btn" id="resetPremiumBtn">Reset premium (demo)</button>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.12.2/lottie.min.js"></script>
+<script src="Product-Configurator.js"></script>
+</body>
+</html>
